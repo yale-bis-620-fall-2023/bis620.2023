@@ -1,8 +1,8 @@
 Package: bis620.2023
 Type: Package
-Title: Functions and Data for the BIS620 (2023) Class
+Title: Homework 3 for BIS620 (F2023) Class
 Version: 0.1.0
-Author: Michael J. Kane
+Author: Adán Rivas
 Maintainer: The package maintainer <michael.kane@yale.ediu>
 Description: Functions and data captured for class.
 License: GPL (>= 2)
