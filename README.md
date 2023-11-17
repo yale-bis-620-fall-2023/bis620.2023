@@ -1,10 +1,10 @@
 
+# midterm-project-adanrivas
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/yale-bis-620-fall-2023/bis620.2023/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yale-bis-620-fall-2023/bis620.2023/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
-
-# midterm-project-adanrivas
 
 Fall 2023 BIS 620 Midterm Shiny App Project. Overview of problem
 solutions and features added.
