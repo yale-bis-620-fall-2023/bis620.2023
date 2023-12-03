@@ -19,7 +19,8 @@ library(forcats)
 #     read_only = TRUE
 #   )
 # )
-# query tables from db
+
+# query tables from db and save to project directory under new folder
 # project_dir <- "/Users/adan_rivas/git/github.com/yale-bis-620-fall-2023/bis620.2023"
 # setwd(project_dir)
 # STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
@@ -29,9 +30,9 @@ library(forcats)
 # Create empty connection to sim duckdb
 con = duckdb::dbConnect(duckdb::duckdb())
 
-STUDIES = tbl(con, "read_parquet('../data/studies.parquet', hive_partitioning = 1)")
-SPONSORS = tbl(con, "read_parquet('../data/sponsors.parquet', hive_partitioning = 1)")
-CONDITIONS = tbl(con, "read_parquet('../data/conditions.parquet', hive_partitioning = 1)")
+STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
+SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
+CONDITIONS = tbl(con, "read_parquet('data/conditions.parquet', hive_partitioning = 1)")
 
 
 # unique sponsor "types"
@@ -133,7 +134,7 @@ plot_phase_histogram <- function(studies_df, phase_labels=study_phases_u, drop_n
 
 
 
-#' @Title Get the number of concurrent studies for each date in a set of studies.
+#' @title Get the number of concurrent studies for each date in a set of studies.
 #'
 #' @description This function takes a data frame of studies and returns a tibble with a
 #' `date` column and a `count` of the number of concurrent trials at that date.

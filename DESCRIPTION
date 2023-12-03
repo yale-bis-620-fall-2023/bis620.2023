@@ -1,9 +1,9 @@
 Package: bis620.2023
 Type: Package
 Title: Homework 3 for BIS620 (F2023) Class
-Version: 0.1.0
+Version: 0.1.1
 Author: Adán Rivas
-Maintainer: The package maintainer <michael.kane@yale.ediu>
+Maintainer: The package maintainer <adan.rivas@yale.edu>
 Description: Functions and data captured for class.
 License: GPL (>= 2)
 Encoding: UTF-8
@@ -12,6 +12,7 @@ LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
+    shiny,
     dplyr (>= 1.1.4),
     ggplot2 (>= 3.4.4),
     purrr (>= 1.0.2),
