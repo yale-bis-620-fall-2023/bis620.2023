@@ -14,6 +14,7 @@ RoxygenNote: 7.2.3
 Imports:
     shiny,
     duckdb,
+    dbplyr,
     dplyr (>= 1.1.4),
     ggplot2 (>= 3.4.4),
     purrr (>= 1.0.2),
