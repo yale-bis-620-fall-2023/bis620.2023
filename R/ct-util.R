@@ -1,12 +1,12 @@
-library(dplyr)
-library(duckdb)
-library(dplyr)
-library(DBI)
-library(DT)
-library(ggplot2)
-library(tidyr)
-library(purrr)
-library(forcats)
+# library(dplyr)
+# library(duckdb)
+# library(dplyr)
+# library(DBI)
+# library(DT)
+# library(ggplot2)
+# library(tidyr)
+# library(purrr)
+# library(forcats)
 
 # ----- Used the following code to make local copies of required tables ----- #
 
@@ -30,9 +30,24 @@ library(forcats)
 # Create empty connection to sim duckdb
 con = duckdb::dbConnect(duckdb::duckdb())
 
-STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
-SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
-CONDITIONS = tbl(con, "read_parquet('data/conditions.parquet', hive_partitioning = 1)")
+# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+
+# STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
+# SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
+# CONDITIONS = tbl(con, "read_parquet('data/conditions.parquet', hive_partitioning = 1)")
+
+# read.csv(system.file("exdata", "mydata.csv", package = "myApp"))
+studies_fpath <- system.file('ext', 'studies.parquet', package = 'bis620.2023')
+sponsors_fpath <- system.file('ext', 'sponsors.parquet', package = 'bis620.2023')
+conditions_fpath <- system.file('ext', 'conditions.parquet', package = 'bis620.2023')
+
+# STUDIES = tbl(con, "read.parquet(studies_fpath, hive_partitioning = 1)")
+# SPONSORS = tbl(con, "read.parquet(system.file('extdata', 'sponsors.parquet', package = 'bis620.2023'), hive_partitioning = 1)")
+# CONDITIONS = tbl(con, "read.parquet(system.file('extdata', 'conditions.parquet', package = 'bis620.2023'), hive_partitioning = 1)")
+
+
 
 
 # unique sponsor "types"
@@ -120,14 +135,14 @@ plot_phase_histogram <- function(studies_df, phase_labels=study_phases_u, drop_n
 
   caption_txt = ''
   if (drop_not_applicable) {
-    study_phase_df <- study_phase_df |> filter(phase != 'Not Applicable')
+    study_phase_df <- study_phase_df |> dplyr::filter(phase != 'Not Applicable')
     caption_txt = "'Not Applicable' values were removed."
   }
 
-  col_phase_plt <- ggplot(data=study_phase_df, aes(x = phase, y = n)) +
-    geom_col() +
-    theme_bw() +
-    labs(x='CT Phase', y='Count', caption=caption_txt)
+  col_phase_plt <- ggplot2::ggplot(data=study_phase_df, aes(x = phase, y = n)) +
+    ggplot2::geom_col() +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x='CT Phase', y='Count', caption=caption_txt)
 
   return (list("study_phase_df" = study_phase_df, "phase_plot" = col_phase_plt))
 }
@@ -194,11 +209,11 @@ plot_concurrent_studies <- function(studies_df) {
     get_concurrent_studies()
 
   concurrent_line_plt <- concurrent_studies_df |>
-    ggplot(aes(x = date, y = count)) +
-    geom_line() +
-    xlab("Date") +
-    ylab("Count") +
-    theme_bw()
+    ggplot2::ggplot(aes(x = date, y = count)) +
+    ggplot2::geom_line() +
+    ggplot2::xlab("Date") +
+    ggplot2::ylab("Count") +
+    ggplot2::theme_bw()
 
   return (list(
     "concurrent_df" = concurrent_studies_df,
@@ -253,24 +268,24 @@ summarize_study_conditions <- function(study_conditions_df, top_n, lump_fct=FALS
 
   if (lump_fct) {
     grouped_study_conditions_df <- study_conditions_df |>
-      select(condition_name) |>
+      dplyr::select(condition_name) |>
       collect() |>
       # only keep top 24 (or top_n*2.5) conditions, otherwise 'Other' group becomes too large
-      mutate(condition_name = fct_lump_n(fct_infreq(condition_name), n=fct_lump_ngroups)) |>
-      group_by(condition_name)
+      dplyr::mutate(condition_name = forcats::fct_lump_n(fct_infreq(condition_name), n=fct_lump_ngroups)) |>
+      dplyr::group_by(condition_name)
   } else {
     grouped_study_conditions_df <- study_conditions_df |>
-      select(condition_name) |>
-      group_by(condition_name)
+      dplyr::select(condition_name) |>
+      dplyr::group_by(condition_name)
   }
 
   summ_study_conditions_df <- grouped_study_conditions_df |>
-    summarize(n = n()) |>
-    arrange(desc(n)) |>
+    dplyr::summarize(n = n()) |>
+    dplyr::arrange(desc(n)) |>
     # keep top in case keyword query does not filter data much
     head(top_n) |>
     collect() |>
-    mutate(condition_name = fct_rev(fct_reorder(condition_name, n)))
+    dplyr::mutate(condition_name = fct_rev(fct_reorder(condition_name, n)))
 
   return (summ_study_conditions_df)
 
@@ -303,12 +318,12 @@ plot_study_conditions_histogram <- function(studies_df, top_n = 8) {
   summ_study_conditions_df <- summarize_study_conditions(
     study_conditions_df = study_conditions_df, top_n = top_n)
 
-  study_cond_col_plt <- ggplot(
+  study_cond_col_plt <- ggplot2::ggplot(
       data=summ_study_conditions_df, aes(x = condition_name, y = n)) +
-    geom_col() +
-    theme_bw() +
-    xlab("Study Condition") +
-    ylab("Count")
+    ggplot2::geom_col() +
+    ggplot2::theme_bw() +
+    ggplot2::xlab("Study Condition") +
+    ggplot2::ylab("Count")
 
   if (top_n > 6) {
     # flip coordinates - make horizontal column chart

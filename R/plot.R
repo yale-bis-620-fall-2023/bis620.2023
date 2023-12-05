@@ -11,7 +11,6 @@
 plot_accel = function(x, x_var = "time") {
   x |>
     pivot_longer(-!!x_var, values_to = "Acceleration", names_to = "Channel") |>
-#    ggplot(aes_string(x = x_var, y = "Acceleration")) +
     ggplot(aes(x = !!as.symbol(x_var), y = Acceleration)) +
     geom_line() +
       facet_grid(Channel ~ .)

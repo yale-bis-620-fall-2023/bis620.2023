@@ -2,14 +2,14 @@ library(dplyr)
 library(tidyr)
 library(vdiffr)
 library(testthat)
-source("R/ct-util.R")
+# source("R/ct-util.R")
 
 
 # show schema tables
 dbGetQuery(con, "SHOW TABLES;")
 
 # get unique phase levels from studies table
-study_phases_u <- STUDIES |> select(phase) |> distinct() |> collect()
+study_phases_u <- STUDIES |> dplyr::select(phase) |> dplyr::distinct() |> collect()
 studies_df <- STUDIES |> head(30000) |> collect()
 conditions_df <- CONDITIONS |> head(5000) |> collect()
 
@@ -19,23 +19,23 @@ plot_phase_histogram(studies_df = studies_df, phase_labels = study_phases_u)
 # cumulative studies
 d = STUDIES |>
   query_kwds("pembrolizumab", "brief_title") |>
-  select(start_date, completion_date) |>
+  dplyr::select(start_date, completion_date) |>
   collect() |>
   get_concurrent_studies() |>
-  ggplot(aes(x = date, y = count)) +
-    geom_line() +
-    xlab("Date") +
-    ylab("Count")
+  ggplot2::ggplot(aes(x = date, y = count)) +
+    ggplot2::geom_line() +
+    ggplot2::xlab("Date") +
+    ggplot2::ylab("Count")
 
 
 ############################
 #### TestThat Functions ####
 ############################
 
-test_that("get_concurrent_studies", {
+testthat::test_that("get concurrent studies", {
   # Call the function with the test data frame
   sampled_studies_df <- studies_df |>
-    select(start_date, completion_date)
+    dplyr::select(start_date, completion_date)
   result <- get_concurrent_studies(studies_df=sampled_studies_df)
 
   # Check that the result has the correct columns
@@ -50,7 +50,7 @@ test_that("get_concurrent_studies", {
 })
 
 
-test_that("plot_concurrent_studies", {
+testthat::test_that("plot concurrent studies", {
   # Define a simple data frame of studies
   studies_df <- data.frame(
     start_date = as.Date(c('2020-01-01', '2020-02-01', '2020-03-01')),
@@ -73,7 +73,7 @@ test_that("plot_concurrent_studies", {
 })
 
 
-test_that("get_study_conditions correctly joins studies and conditions data", {
+testthat::test_that("get_study_conditions correctly joins studies and conditions data", {
   result <- get_study_conditions(studies_df=studies_df, conditions_df=conditions_df) |>
     head(4) |>
     select(nct_id, condition_name, source)
@@ -89,18 +89,7 @@ test_that("get_study_conditions correctly joins studies and conditions data", {
 })
 
 
-test_that("summarize_study_conditions", {
-  # Define a simple data frame of studies and conditions
-  # studies_df <- data.frame(
-  #   nct_id = c("NCT001", "NCT002", "NCT003", "NCT004", "NCT005"),
-  #   study_name = c("Study 1", "Study 2", "Study 3", "Study 4", "Study 5"))
-  #
-  # conditions <- data.frame(
-  #   nct_id = c("NCT001", "NCT002", "NCT003", "NCT004", "NCT005"),
-  #   id = c(1, 2, 3, 4, 5),
-  #   downcase_name = c("study 1", "study 2", "study 3", "study 4", "study 5"),
-  #   name = c("Condition 1", "Condition 2", "Condition 1", "Condition 3", "Condition 2"))
-
+testthat::test_that("summarize_study_conditions", {
   study_conditions_df <- get_study_conditions(studies_df=studies_df, conditions_df=conditions_df)
 
   top_n <- 2
@@ -120,7 +109,7 @@ test_that("summarize_study_conditions", {
 })
 
 
-test_that("plot_study_conditions_histogram", {
+testthat::test_that("plot study conditions histogram", {
   result <- plot_study_conditions_histogram(studies_df=studies_df, top_n = 3)
 
   # Check that the list has the correct names
@@ -133,7 +122,7 @@ test_that("plot_study_conditions_histogram", {
   expect_identical(levels(result$summ_df$condition_name), c("Healthy", "Breast Cancer", "Obesity"))
 
   # Check that the "study_cond_plot" element is a ggplot object
-  expect_true(is.ggplot(result$study_cond_plot))
+  expect_true(ggplot2::is.ggplot(result$study_cond_plot))
 
   vdiffr::expect_doppelganger(
     title="plot-study-conditions-1",

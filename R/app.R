@@ -7,12 +7,14 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
+# library(shiny)
+# source("R/ct-util.R")
 
-source("R/ct-util.R")
 max_num_studies <- 1000
 
-# runApp <- function() {
+#' @import shiny
+# runCTGovbApp <- function() {
+
 ui <- fluidPage(
 
   # Application title
@@ -165,4 +167,4 @@ shinyApp(ui = ui, server = server)
 # }
 
 
-# runApp()
+# bis620.2023::runCTGovbApp()
