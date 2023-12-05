@@ -12,7 +12,10 @@
 
 max_num_studies <- 1000
 
+#' @title Shiny app run function
 #' @import shiny
+#'
+#' @export
 runCTGovbApp <- function() {
   ui <- fluidPage(
 

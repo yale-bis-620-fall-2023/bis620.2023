@@ -30,24 +30,13 @@
 # Create empty connection to sim duckdb
 con = duckdb::dbConnect(duckdb::duckdb())
 
-# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
-# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
-# STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+SPONSORS = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+CONDITIONS = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
 
 # STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
 # SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
 # CONDITIONS = tbl(con, "read_parquet('data/conditions.parquet', hive_partitioning = 1)")
-
-# read.csv(system.file("exdata", "mydata.csv", package = "myApp"))
-studies_fpath <- system.file('ext', 'studies.parquet', package = 'bis620.2023')
-sponsors_fpath <- system.file('ext', 'sponsors.parquet', package = 'bis620.2023')
-conditions_fpath <- system.file('ext', 'conditions.parquet', package = 'bis620.2023')
-
-# STUDIES = tbl(con, "read.parquet(studies_fpath, hive_partitioning = 1)")
-# SPONSORS = tbl(con, "read.parquet(system.file('extdata', 'sponsors.parquet', package = 'bis620.2023'), hive_partitioning = 1)")
-# CONDITIONS = tbl(con, "read.parquet(system.file('extdata', 'conditions.parquet', package = 'bis620.2023'), hive_partitioning = 1)")
-
-
 
 
 # unique sponsor "types"
