@@ -13,8 +13,8 @@
 max_num_studies <- 1000
 
 #' @title Shiny app run function
+#' @description Process user input keywords to filter database table.
 #' @import shiny
-#'
 #' @export
 runCTGovbApp <- function() {
   ui <- fluidPage(
@@ -169,4 +169,4 @@ runCTGovbApp <- function() {
 }
 
 
-bis620.2023::runCTGovbApp()
+# bis620.2023::runCTGovbApp()

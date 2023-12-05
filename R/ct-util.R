@@ -31,8 +31,8 @@
 con = duckdb::dbConnect(duckdb::duckdb())
 
 STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
-SPONSORS = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
-CONDITIONS = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+SPONSORS = tbl(con, "read_parquet('inst/extdata/sponsors.parquet', hive_partitioning = 1)")
+CONDITIONS = tbl(con, "read_parquet('inst/extdata/conditions.parquet', hive_partitioning = 1)")
 
 # STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
 # SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
