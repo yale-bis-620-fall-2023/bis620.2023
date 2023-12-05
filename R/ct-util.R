@@ -1,6 +1,5 @@
 # library(dplyr)
 # library(duckdb)
-# library(dplyr)
 # library(DBI)
 # library(DT)
 # library(ggplot2)
@@ -30,9 +29,9 @@
 # Create empty connection to sim duckdb
 con = duckdb::dbConnect(duckdb::duckdb())
 
-STUDIES = tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
-SPONSORS = tbl(con, "read_parquet('inst/extdata/sponsors.parquet', hive_partitioning = 1)")
-CONDITIONS = tbl(con, "read_parquet('inst/extdata/conditions.parquet', hive_partitioning = 1)")
+STUDIES = dplyr::tbl(con, "read_parquet('inst/extdata/studies.parquet', hive_partitioning = 1)")
+SPONSORS = dplyr::tbl(con, "read_parquet('inst/extdata/sponsors.parquet', hive_partitioning = 1)")
+CONDITIONS = dplyr::tbl(con, "read_parquet('inst/extdata/conditions.parquet', hive_partitioning = 1)")
 
 # STUDIES = tbl(con, "read_parquet('data/studies.parquet', hive_partitioning = 1)")
 # SPONSORS = tbl(con, "read_parquet('data/sponsors.parquet', hive_partitioning = 1)")
